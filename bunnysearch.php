@@ -2,7 +2,7 @@
 
 $sql1 = 'SELECT * FROM bunnies';
 $result1 = $conn->query($sql1);
-$rowcount=mysqli_num_rows($result1);
+$rowcount = mysqli_num_rows($result1);
 $randomId = rand(1, $rowcount);
 
 $sql2 = 'SELECT breed, colour FROM bunnies';
@@ -21,12 +21,12 @@ for ($i = 0; $i < count($allBreedData); $i++) {
         if ($allBreedData[$i] == $breedData[$j]) {
             $breed_present = true;
             break;
-            }
         }
+    }
 
     if (!$breed_present) {
-            $breed = $allBreedData[$i];
-            array_push($breedData, $breed);
+        $breed = $allBreedData[$i];
+        array_push($breedData, $breed);
     }
 }
 
@@ -37,12 +37,12 @@ for ($i = 0; $i < count($allColourData); $i++) {
         if ($allColourData[$i] == $colourData[$j]) {
             $colour_present = true;
             break;
-            }
         }
+    }
 
     if (!$colour_present) {
-            $colour = $allColourData[$i];
-            array_push($colourData, $colour);
+        $colour = $allColourData[$i];
+        array_push($colourData, $colour);
     }
 }
 
@@ -63,31 +63,33 @@ while ($row = mysqli_fetch_assoc($result3)) {
     </div>
     <div class="content-block">
         <form action="bunnysearch.php" method="GET">
-        <h3>Search form</h3>
-        <p class="search-cr">1. Breed</p>
-        <div class="checkbox-container">
-        <?php
+            <h3>Search form</h3>
+            <p class="search-cr">1. Breed</p>
+            <div class="checkbox-container">
+                <?php
 
-        foreach ($breedData as $breed) {
-            $breedLabel = strtolower(str_replace(' ', '', $breed));
-            $breedId = $breedLabel;
-            $breedValue = $breed;
-            ?>
-            <div>
-            <label for="<?php echo $breedLabel; ?>"><?php echo $breedValue; ?></label>
-            <input type="checkbox" id="<?php echo $breedId; ?>" name="breedInput[]" 
+                foreach ($breedData as $breed) {
+                    $breedLabel = strtolower(str_replace(' ', '', $breed));
+                    $breedId = $breedLabel;
+                    $breedValue = $breed;
+                    ?>
+                    <div>
+                        <label for="<?php echo $breedLabel; ?>">
+                            <?php echo $breedValue; ?>
+                        </label>
+                        <input type="checkbox" id="<?php echo $breedId; ?>" name="breedInput[]"
             <?php
-            if (isset($_GET['breedInput'])) {
-                if (in_array($breedValue, $_GET['breedInput'])) {
-                    echo 'checked';
+                if (isset($_GET['breedInput'])) {
+                    if (in_array($breedValue, $_GET['breedInput'])) {
+                        echo 'checked';
+                    }
                 }
-            }
-            ?>
-            value="<?php echo $breedValue; ?>">
-            </div>
-        <?php
-        }
-        ?>
+                ?>
+                value="<?php echo $breedValue; ?>">
+                </div>
+            <?php
+                }
+                ?>
         </div>
 
         <p class="search-cr">2. Gender</p>
@@ -179,19 +181,19 @@ while ($row = mysqli_fetch_assoc($result3)) {
         <?php
         foreach ($colourData as $colour) {
             ?>
-            <div>
-            <label for="<?php echo $colour; ?>"><?php echo $colour; ?></label>
-            <input type="checkbox" id="<?php echo $colour; ?>" name="colourInput[]"
-            <?php
-            if (isset($_GET['colourInput'])) {
-                if (in_array($colour, $_GET['colourInput'])) {
-                    echo 'checked';
+                <div>
+                <label for="<?php echo $colour; ?>"><?php echo $colour; ?></label>
+                <input type="checkbox" id="<?php echo $colour; ?>" name="colourInput[]"
+                <?php
+                if (isset($_GET['colourInput'])) {
+                    if (in_array($colour, $_GET['colourInput'])) {
+                        echo 'checked';
+                    }
                 }
-            }
-            ?>
-            value="<?php echo $colour; ?>">
-            </div>
-        <?php
+                ?>
+                value="<?php echo $colour; ?>">
+                </div>
+            <?php
         }
         ?>
         </div>
@@ -370,19 +372,19 @@ while ($row = mysqli_fetch_assoc($result3)) {
         <?php
         foreach ($abilityData as $ability) {
             ?>
-            <div>
-            <label for="<?php echo $ability['id']; ?>"><?php echo $ability['ability']; ?></label>
-            <input type="checkbox" id="<?php echo $ability['id']; ?>" name="abilityInput[]"
-            <?php
-            if (isset($_GET['abilityInput'])) {
-                if (in_array($ability['id'], $_GET['abilityInput'])) {
-                    echo 'checked';
+                <div>
+                <label for="<?php echo $ability['id']; ?>"><?php echo $ability['ability']; ?></label>
+                <input type="checkbox" id="<?php echo $ability['id']; ?>" name="abilityInput[]"
+                <?php
+                if (isset($_GET['abilityInput'])) {
+                    if (in_array($ability['id'], $_GET['abilityInput'])) {
+                        echo 'checked';
+                    }
                 }
-            }
-            ?>
-            value="<?php echo $ability['id']; ?>">
-            </div>
-        <?php
+                ?>
+                value="<?php echo $ability['id']; ?>">
+                </div>
+            <?php
         }
         ?>
         </div>
@@ -395,497 +397,498 @@ while ($row = mysqli_fetch_assoc($result3)) {
 <div class="content-block">
     <?php
 
-        $sql4 = 'SELECT distinct `id`, `name`, `breed`, `gender`, `group`, `neutered`, `colour`, `age`, `weight`, `ear_length`, `level_of_fluffiness`, `rescue_date`, `picture`, `story`, `customers_id` 
+    $sql4 = 'SELECT distinct `id`, `name`, `breed`, `gender`, `group`, `neutered`, `colour`, `age`, `weight`, `ear_length`, `level_of_fluffiness`, `rescue_date`, `picture`, `story`, `customers_id` 
         FROM bunnies
         JOIN bunnies_abilities
         ON bunnies.id = bunnies_abilities.bunny_id';
 
-        if (isset($_GET['breedInput'])) {
-            $breedInput = $_GET['breedInput'];
-            // echo '<p>Selected breeds: ';
-            // for($i = 0; $i < count($breedInput); $i++) {
-            //     if ($i == count($breedInput) - 1) {
-            //         echo $breedInput[$i]. '.';
-            //     } else {
-            //         echo $breedInput[$i]. ', ';
-            //     }
-            // }
-            // echo '</p>';
+    if (isset($_GET['breedInput'])) {
+        $breedInput = $_GET['breedInput'];
+        // echo '<p>Selected breeds: ';
+        // for($i = 0; $i < count($breedInput); $i++) {
+        //     if ($i == count($breedInput) - 1) {
+        //         echo $breedInput[$i]. '.';
+        //     } else {
+        //         echo $breedInput[$i]. ', ';
+        //     }
+        // }
+        // echo '</p>';
+    
+        $breedSearchSql = '';
 
-            $breedSearchSql = '';
-
-            foreach ($breedInput as $index => $breed) {
-                if ($index == count($breedInput) - 1) {
-                    $breedSearchSql .= "'$breed'";
-                } else {
-                    $breedSearchSql .= "'$breed'". ', ';
-                } 
-            }
-
-            $sql4 .= " WHERE `breed` in ($breedSearchSql) ";
-        }
-
-        if (isset($_GET['genderInput'])) {
-            $genderInput = $_GET['genderInput'];
-            // echo '<p>Selected genders: ';
-            // for($i = 0; $i < count($genderInput); $i++) {
-            //     if ($i == count($genderInput) - 1) {
-            //         echo $genderInput[$i]. '.';
-            //     } else {
-            //         echo $genderInput[$i]. ', ';
-            //     }
-            // }
-            // echo '</p>';
-
-            $genderSearchSql = '';
-
-            foreach ($genderInput as $index => $gender) {
-                if ($index == count($genderInput) - 1) {
-                    $genderSearchSql .= "'$gender'";
-                } else {
-                    $genderSearchSql .= "'$gender'". ', ';
-                } 
-            }
-
-            if (!isset($_GET['breedInput'])) {
-                $sql4 .= " WHERE `gender` in ($genderSearchSql) ";
+        foreach ($breedInput as $index => $breed) {
+            if ($index == count($breedInput) - 1) {
+                $breedSearchSql .= "'$breed'";
             } else {
-                $sql4 .= " AND (`gender` in ($genderSearchSql))";
+                $breedSearchSql .= "'$breed'" . ', ';
             }
         }
 
-        if (isset($_GET['groupInput'])) {
-            $groupInput = $_GET['groupInput'];
-            // echo '<p>Selected groups: ';
-            // for($i = 0; $i < count($groupInput); $i++) {
-            //     if ($i == count($groupInput) - 1) {
-            //         echo $groupInput[$i]. '.';
-            //     } else {
-            //         echo $groupInput[$i]. ', ';
-            //     }
-            // }
-            // echo '</p>';
+        $sql4 .= " WHERE `breed` in ($breedSearchSql) ";
+    }
 
-            $groupSearchSql = '';
+    if (isset($_GET['genderInput'])) {
+        $genderInput = $_GET['genderInput'];
+        // echo '<p>Selected genders: ';
+        // for($i = 0; $i < count($genderInput); $i++) {
+        //     if ($i == count($genderInput) - 1) {
+        //         echo $genderInput[$i]. '.';
+        //     } else {
+        //         echo $genderInput[$i]. ', ';
+        //     }
+        // }
+        // echo '</p>';
+    
+        $genderSearchSql = '';
 
-            foreach ($groupInput as $index => $group) {
-                if ($index == count($groupInput) - 1) {
-                    $groupSearchSql .= "'$group'";
-                } else {
-                    $groupSearchSql .= "'$group'". ', ';
-                } 
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput'])) {
-                $sql4 .= " WHERE `group` in ($groupSearchSql) ";
+        foreach ($genderInput as $index => $gender) {
+            if ($index == count($genderInput) - 1) {
+                $genderSearchSql .= "'$gender'";
             } else {
-                $sql4 .= " AND (`group` in ($groupSearchSql))";
+                $genderSearchSql .= "'$gender'" . ', ';
             }
         }
 
-        if (isset($_GET['neuteredInput'])) {
-            $neuteredInput = $_GET['neuteredInput'];
-            // echo '<p>Neutered: ';
-            // for($i = 0; $i < count($neuteredInput); $i++) {
-            //     if ($i == count($neuteredInput) - 1) {
-            //         echo $neuteredInput[$i]. '.';
-            //     } else {
-            //         echo $neuteredInput[$i]. ', ';
-            //     }
-            // }
-            // echo '</p>';
+        if (!isset($_GET['breedInput'])) {
+            $sql4 .= " WHERE `gender` in ($genderSearchSql) ";
+        } else {
+            $sql4 .= " AND (`gender` in ($genderSearchSql))";
+        }
+    }
 
-            $neuteredSearchSql = '';
+    if (isset($_GET['groupInput'])) {
+        $groupInput = $_GET['groupInput'];
+        // echo '<p>Selected groups: ';
+        // for($i = 0; $i < count($groupInput); $i++) {
+        //     if ($i == count($groupInput) - 1) {
+        //         echo $groupInput[$i]. '.';
+        //     } else {
+        //         echo $groupInput[$i]. ', ';
+        //     }
+        // }
+        // echo '</p>';
+    
+        $groupSearchSql = '';
 
-            foreach ($neuteredInput as $index => $neutered) {
-                if ($index == count($neuteredInput) - 1) {
-                    $neuteredSearchSql .= "'$neutered'";
-                } else {
-                    $neuteredSearchSql .= "'$neutered'". ', ';
-                } 
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput'])) {
-                $sql4 .= " WHERE `neutered` in ($neuteredSearchSql) ";
+        foreach ($groupInput as $index => $group) {
+            if ($index == count($groupInput) - 1) {
+                $groupSearchSql .= "'$group'";
             } else {
-                $sql4 .= " AND (`neutered` in ($neuteredSearchSql)) ";
+                $groupSearchSql .= "'$group'" . ', ';
             }
         }
 
-        if (isset($_GET['colourInput'])) {
-            $colourInput = $_GET['colourInput'];
-            // echo '<p>Colour: ';
-            // for($i = 0; $i < count($colourInput); $i++) {
-            //     if ($i == count($colourInput) - 1) {
-            //         echo $colourInput[$i]. '.';
-            //     } else {
-            //         echo $colourInput[$i]. ', ';
-            //     }
-            // }
-            // echo '</p>';
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput'])) {
+            $sql4 .= " WHERE `group` in ($groupSearchSql) ";
+        } else {
+            $sql4 .= " AND (`group` in ($groupSearchSql))";
+        }
+    }
 
-            $colourSearchSql = '';
+    if (isset($_GET['neuteredInput'])) {
+        $neuteredInput = $_GET['neuteredInput'];
+        // echo '<p>Neutered: ';
+        // for($i = 0; $i < count($neuteredInput); $i++) {
+        //     if ($i == count($neuteredInput) - 1) {
+        //         echo $neuteredInput[$i]. '.';
+        //     } else {
+        //         echo $neuteredInput[$i]. ', ';
+        //     }
+        // }
+        // echo '</p>';
+    
+        $neuteredSearchSql = '';
 
-            foreach ($colourInput as $index => $colour) {
-                if ($index == count($colourInput) - 1) {
-                    $colourSearchSql .= "'$colour'";
-                } else {
-                    $colourSearchSql .= "'$colour'". ', ';
-                } 
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput'])) {
-                $sql4 .= " WHERE `colour` in ($colourSearchSql) ";
+        foreach ($neuteredInput as $index => $neutered) {
+            if ($index == count($neuteredInput) - 1) {
+                $neuteredSearchSql .= "'$neutered'";
             } else {
-                $sql4 .= " AND (`colour` in ($colourSearchSql)) ";
+                $neuteredSearchSql .= "'$neutered'" . ', ';
             }
         }
 
-        if (isset($_GET['ageInput'])) {
-            $ageInput = $_GET['ageInput'];
-            $ageSearchArray = array();
-            // echo '<p>Age: ';
-            for($i = 0; $i < count($ageInput); $i++) {
-                if ($i == count($ageInput) - 1) {
-                    switch ($ageInput[$i]){
-                        case 1:
-                            // echo '1 year.';
-                            array_push($ageSearchArray, '= 1');
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput'])) {
+            $sql4 .= " WHERE `neutered` in ($neuteredSearchSql) ";
+        } else {
+            $sql4 .= " AND (`neutered` in ($neuteredSearchSql)) ";
+        }
+    }
+
+    if (isset($_GET['colourInput'])) {
+        $colourInput = $_GET['colourInput'];
+        // echo '<p>Colour: ';
+        // for($i = 0; $i < count($colourInput); $i++) {
+        //     if ($i == count($colourInput) - 1) {
+        //         echo $colourInput[$i]. '.';
+        //     } else {
+        //         echo $colourInput[$i]. ', ';
+        //     }
+        // }
+        // echo '</p>';
+    
+        $colourSearchSql = '';
+
+        foreach ($colourInput as $index => $colour) {
+            if ($index == count($colourInput) - 1) {
+                $colourSearchSql .= "'$colour'";
+            } else {
+                $colourSearchSql .= "'$colour'" . ', ';
+            }
+        }
+
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput'])) {
+            $sql4 .= " WHERE `colour` in ($colourSearchSql) ";
+        } else {
+            $sql4 .= " AND (`colour` in ($colourSearchSql)) ";
+        }
+    }
+
+    if (isset($_GET['ageInput'])) {
+        $ageInput = $_GET['ageInput'];
+        $ageSearchArray = array();
+        // echo '<p>Age: ';
+        for ($i = 0; $i < count($ageInput); $i++) {
+            if ($i == count($ageInput) - 1) {
+                switch ($ageInput[$i]) {
+                    case 1:
+                        // echo '1 year.';
+                        array_push($ageSearchArray, '= 1');
                         break;
-                        case 2:
-                            // echo '2 years.';
-                            array_push($ageSearchArray, '= 2');
+                    case 2:
+                        // echo '2 years.';
+                        array_push($ageSearchArray, '= 2');
                         break;
-                        case 3:
-                            // echo '3 years.';
-                            array_push($ageSearchArray, '= 3');
+                    case 3:
+                        // echo '3 years.';
+                        array_push($ageSearchArray, '= 3');
                         break;
-                        case 4:
-                            // echo '4 years or more.';
-                            array_push($ageSearchArray, '>= 4');
+                    case 4:
+                        // echo '4 years or more.';
+                        array_push($ageSearchArray, '>= 4');
                         break;
-                    }
-                } else {
-                    switch ($ageInput[$i]) {
+                }
+            } else {
+                switch ($ageInput[$i]) {
                     case 1:
                         // echo '1 year, ';
                         array_push($ageSearchArray, '= 1');
-                    break;
+                        break;
                     case 2:
                         // echo '2 years, ';
                         array_push($ageSearchArray, '= 2');
-                    break;
+                        break;
                     case 3:
                         // echo '3 years, ';
                         array_push($ageSearchArray, '= 3');
-                    break;
+                        break;
                     case 4:
                         // echo '4 years or more, ';
                         array_push($ageSearchArray, '>= 4');
-                    break;
+                        break;
                 }
-            }
-            }
-            // echo '</p>';
-
-            $ageSearchSql = '';
-
-            if (count($ageSearchArray) > 1) {
-                foreach ($ageSearchArray as $index => $ageRange) {
-                    if ($index == count($ageSearchArray) - 1) {
-                        $ageSearchSql .= $ageRange;
-                    } else {
-                        $ageSearchSql .= $ageRange. ' OR `age` ';
-                    }
-                }
-            
-            } else {
-                $ageSearchSql = $ageSearchArray[0];
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput'])) {
-                $sql4 .= " WHERE `age` $ageSearchSql ";
-            } else {
-                $sql4 .= " AND (`age` $ageSearchSql)";
             }
         }
+        // echo '</p>';
+    
+        $ageSearchSql = '';
 
-        if (isset($_GET['weightInput'])) {
-            $weightInput = $_GET['weightInput'];
-            $weightSearchArray = array();
-            // echo '<p>Weight: ';
-            for($i = 0; $i < count($weightInput); $i++) {
-                if ($i == count($weightInput) - 1) {
-                    switch ($weightInput[$i]){
-                        case 'weightRange1':
-                            // echo 'less than 2 kg.';
-                            array_push($weightSearchArray, '< 2');
-                        break;
-                        case 'weightRange2':
-                            // echo '2-4 kg.';
-                            array_push($weightSearchArray, '>= 2 AND `weight` <=4');
-                        break;
-                        case 'weightRange3':
-                            // echo 'more than 4 kg.';
-                            array_push($weightSearchArray, '> 4');
-                        break;
-                    }
+        if (count($ageSearchArray) > 1) {
+            foreach ($ageSearchArray as $index => $ageRange) {
+                if ($index == count($ageSearchArray) - 1) {
+                    $ageSearchSql .= $ageRange;
                 } else {
-                    switch ($weightInput[$i]) {
-                        case 'weightRange1':
-                            // echo 'less than 2 kg, ';
-                            array_push($weightSearchArray, '< 2');
-                        break;
-                        case 'weightRange2':
-                            // echo '2-4 kg, ';
-                            array_push($weightSearchArray, '>= 2 AND `weight` <=4');
-                        break;
-                        case 'weightRange3':
-                            // echo 'more than 4 kg, ';
-                            array_push($weightSearchArray, '> 4');
-                        break;
+                    $ageSearchSql .= $ageRange . ' OR `age` ';
                 }
             }
-            }
-            // echo '</p>';
 
-            $weightSearchSql = '';
-
-            if (count($weightSearchArray) > 1) {
-                foreach ($weightSearchArray as $index => $weightRange) {
-                    if ($index == count($weightSearchArray) - 1) {
-                        $weightSearchSql .= $weightRange;
-                    } else {
-                        $weightSearchSql .= $weightRange. ' OR `weight` ';
-                    }
-                }
-            
-            } else {
-                $weightSearchSql = $weightSearchArray[0];
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput'])) {
-                $sql4 .= " WHERE `weight` $weightSearchSql ";
-            } else {
-                $sql4 .= " AND (`weight` $weightSearchSql)";
-            }
+        } else {
+            $ageSearchSql = $ageSearchArray[0];
         }
 
-        if (isset($_GET['earLengthInput'])) {
-            $earLengthInput = $_GET['earLengthInput'];
-            $earLengthSearchArray = array();
-            // echo '<p>Ear length: ';
-            for($i = 0; $i < count($earLengthInput); $i++) {
-                if ($i == count($earLengthInput) - 1) {
-                    switch ($earLengthInput[$i]){
-                        case 'earLengthRange1':
-                            // echo 'less than 10 cm.';
-                            array_push($earLengthSearchArray, '< 10');
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput'])) {
+            $sql4 .= " WHERE `age` $ageSearchSql ";
+        } else {
+            $sql4 .= " AND (`age` $ageSearchSql)";
+        }
+    }
+
+    if (isset($_GET['weightInput'])) {
+        $weightInput = $_GET['weightInput'];
+        $weightSearchArray = array();
+        // echo '<p>Weight: ';
+        for ($i = 0; $i < count($weightInput); $i++) {
+            if ($i == count($weightInput) - 1) {
+                switch ($weightInput[$i]) {
+                    case 'weightRange1':
+                        // echo 'less than 2 kg.';
+                        array_push($weightSearchArray, '< 2');
                         break;
-                        case 'earLengthRange2':
-                            // echo '10-15 cm.';
-                            array_push($earLengthSearchArray, '>=10 AND `ear_length` <= 15');
+                    case 'weightRange2':
+                        // echo '2-4 kg.';
+                        array_push($weightSearchArray, '>= 2 AND `weight` <=4');
                         break;
-                        case 'earLengthRange3':
-                            // echo 'more than 15cm.';
-                            array_push($earLengthSearchArray, '> 15');
+                    case 'weightRange3':
+                        // echo 'more than 4 kg.';
+                        array_push($weightSearchArray, '> 4');
                         break;
-                    }
+                }
+            } else {
+                switch ($weightInput[$i]) {
+                    case 'weightRange1':
+                        // echo 'less than 2 kg, ';
+                        array_push($weightSearchArray, '< 2');
+                        break;
+                    case 'weightRange2':
+                        // echo '2-4 kg, ';
+                        array_push($weightSearchArray, '>= 2 AND `weight` <=4');
+                        break;
+                    case 'weightRange3':
+                        // echo 'more than 4 kg, ';
+                        array_push($weightSearchArray, '> 4');
+                        break;
+                }
+            }
+        }
+        // echo '</p>';
+    
+        $weightSearchSql = '';
+
+        if (count($weightSearchArray) > 1) {
+            foreach ($weightSearchArray as $index => $weightRange) {
+                if ($index == count($weightSearchArray) - 1) {
+                    $weightSearchSql .= $weightRange;
                 } else {
-                    switch ($earLengthInput[$i]) {
-                        case 'earLengthRange1':
-                            // echo 'less than 10 cm, ';
-                            array_push($earLengthSearchArray, '< 10');
-                        break;
-                        case 'earLengthRange2':
-                            // echo '10-15 cm, ';
-                            array_push($earLengthSearchArray, '>=10 AND `ear_length` <= 15');
-                        break;
-                        case 'earLengthRange3':
-                            // echo 'more than 15cm, ';
-                            array_push($earLengthSearchArray, '> 15');
-                        break;
+                    $weightSearchSql .= $weightRange . ' OR `weight` ';
                 }
             }
-            }
-            // echo '</p>';
 
-            $earLengthSearchSql = '';
-
-            if (count($earLengthSearchArray) > 1) {
-                foreach ($earLengthSearchArray as $index => $earLengthRange) {
-                    if ($index == count($earLengthSearchArray) - 1) {
-                        $earLengthSearchSql .= $earLengthRange;
-                    } else {
-                        $earLengthSearchSql .= $earLengthRange. ' OR `ear_length` ';
-                    }
-                }
-            
-            } else {
-                $earLengthSearchSql = $earLengthSearchArray[0];
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput'])) {
-                $sql4 .= " WHERE `ear_length` $earLengthSearchSql ";
-            } else {
-                $sql4 .= " AND (`ear_length` $earLengthSearchSql)";
-            }
+        } else {
+            $weightSearchSql = $weightSearchArray[0];
         }
 
-        if (isset($_GET['fluffinessInput'])) {
-            $fluffinessInput = $_GET['fluffinessInput'];
-            $fluffinessSearchArray = array();
-            // echo '<p>Level of fluffiness: ';
-            for($i = 0; $i < count($fluffinessInput); $i++) {
-                if ($i == count($fluffinessInput) - 1) {
-                    switch ($fluffinessInput[$i]){
-                        case 'fluffinessRange1':
-                            // echo 'less than 4.';
-                            array_push($fluffinessSearchArray, '< 4');
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput'])) {
+            $sql4 .= " WHERE `weight` $weightSearchSql ";
+        } else {
+            $sql4 .= " AND (`weight` $weightSearchSql)";
+        }
+    }
+
+    if (isset($_GET['earLengthInput'])) {
+        $earLengthInput = $_GET['earLengthInput'];
+        $earLengthSearchArray = array();
+        // echo '<p>Ear length: ';
+        for ($i = 0; $i < count($earLengthInput); $i++) {
+            if ($i == count($earLengthInput) - 1) {
+                switch ($earLengthInput[$i]) {
+                    case 'earLengthRange1':
+                        // echo 'less than 10 cm.';
+                        array_push($earLengthSearchArray, '< 10');
                         break;
-                        case 'fluffinessRange2':
-                            // echo '4-6.';
-                            array_push($fluffinessSearchArray, '>= 4 AND `level_of_fluffiness` <= 6');
+                    case 'earLengthRange2':
+                        // echo '10-15 cm.';
+                        array_push($earLengthSearchArray, '>=10 AND `ear_length` <= 15');
                         break;
-                        case 'fluffinessRange3':
-                            // echo 'more than 6.';
-                            array_push($fluffinessSearchArray, '> 6');
+                    case 'earLengthRange3':
+                        // echo 'more than 15cm.';
+                        array_push($earLengthSearchArray, '> 15');
                         break;
-                    }
+                }
+            } else {
+                switch ($earLengthInput[$i]) {
+                    case 'earLengthRange1':
+                        // echo 'less than 10 cm, ';
+                        array_push($earLengthSearchArray, '< 10');
+                        break;
+                    case 'earLengthRange2':
+                        // echo '10-15 cm, ';
+                        array_push($earLengthSearchArray, '>=10 AND `ear_length` <= 15');
+                        break;
+                    case 'earLengthRange3':
+                        // echo 'more than 15cm, ';
+                        array_push($earLengthSearchArray, '> 15');
+                        break;
+                }
+            }
+        }
+        // echo '</p>';
+    
+        $earLengthSearchSql = '';
+
+        if (count($earLengthSearchArray) > 1) {
+            foreach ($earLengthSearchArray as $index => $earLengthRange) {
+                if ($index == count($earLengthSearchArray) - 1) {
+                    $earLengthSearchSql .= $earLengthRange;
                 } else {
-                    switch ($fluffinessInput[$i]) {
-                        case 'fluffinessRange1':
-                            // echo 'less than 4, ';
-                            array_push($fluffinessSearchArray, '< 4');
-                        break;
-                        case 'fluffinessRange2':
-                            // echo '4-6, ';
-                            array_push($fluffinessSearchArray, '>= 4 AND `level_of_fluffiness` <= 6');
-                        break;
-                        case 'fluffinessRange3':
-                            // echo 'more than 6, ';
-                            array_push($fluffinessSearchArray, '> 6');
-                        break;
+                    $earLengthSearchSql .= $earLengthRange . ' OR `ear_length` ';
                 }
             }
-            }
-            // echo '</p>';
 
-            $fluffinessSearchSql = '';
-
-            if (count($fluffinessSearchArray) > 1) {
-                foreach ($fluffinessSearchArray as $index => $fluffinessRange) {
-                    if ($index == count($fluffinessSearchArray) - 1) {
-                        $fluffinessSearchSql .= $fluffinessRange;
-                    } else {
-                        $fluffinessSearchSql .= $fluffinessRange. ' OR `level_of_fluffiness` ';
-                    }
-                }
-            
-            } else {
-                $fluffinessSearchSql = $fluffinessSearchArray[0];
-            }
-
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput']) && !isset($_GET['earLengthInput'])) {
-                $sql4 .= " WHERE `level_of_fluffiness` $fluffinessSearchSql ";
-            } else {
-                $sql4 .= " AND (`level_of_fluffiness` $fluffinessSearchSql)";
-            }
+        } else {
+            $earLengthSearchSql = $earLengthSearchArray[0];
         }
 
-        if (isset($_GET['abilityInput'])) {
-            $abilities = $_GET['abilityInput'];
-            // echo '<p>Special abilities: ';
-            // for ($i = 0; $i < count($abilities); $i++) {
-            //     foreach ($abilityData as $ability) {
-            //         if ($i == count($abilities) - 1 && $abilities[$i] == $ability['id']) {
-            //             echo $ability['ability']. '.';
-            //         }
-            //         if ($i < count($abilities) - 1 && $abilities[$i] == $ability['id']) {
-            //             echo $ability['ability']. ', ';
-            //         }
-            //     }
-            // }
-            // echo '</p>';
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput'])) {
+            $sql4 .= " WHERE `ear_length` $earLengthSearchSql ";
+        } else {
+            $sql4 .= " AND (`ear_length` $earLengthSearchSql)";
+        }
+    }
 
-            $abilitySearchSql = '';
-
-            if (count($abilities) > 1) {
-                foreach ($abilities as $index => $ability) {
-                    if ($index == count($abilities) - 1) {
-                        $abilitySearchSql .= $ability;
-                    } else {
-                        $abilitySearchSql .= $ability. ' OR bunnies_abilities.ability_id = ';
-                    }
+    if (isset($_GET['fluffinessInput'])) {
+        $fluffinessInput = $_GET['fluffinessInput'];
+        $fluffinessSearchArray = array();
+        // echo '<p>Level of fluffiness: ';
+        for ($i = 0; $i < count($fluffinessInput); $i++) {
+            if ($i == count($fluffinessInput) - 1) {
+                switch ($fluffinessInput[$i]) {
+                    case 'fluffinessRange1':
+                        // echo 'less than 4.';
+                        array_push($fluffinessSearchArray, '< 4');
+                        break;
+                    case 'fluffinessRange2':
+                        // echo '4-6.';
+                        array_push($fluffinessSearchArray, '>= 4 AND `level_of_fluffiness` <= 6');
+                        break;
+                    case 'fluffinessRange3':
+                        // echo 'more than 6.';
+                        array_push($fluffinessSearchArray, '> 6');
+                        break;
                 }
-            
             } else {
-                $abilitySearchSql = $abilities[0];
+                switch ($fluffinessInput[$i]) {
+                    case 'fluffinessRange1':
+                        // echo 'less than 4, ';
+                        array_push($fluffinessSearchArray, '< 4');
+                        break;
+                    case 'fluffinessRange2':
+                        // echo '4-6, ';
+                        array_push($fluffinessSearchArray, '>= 4 AND `level_of_fluffiness` <= 6');
+                        break;
+                    case 'fluffinessRange3':
+                        // echo 'more than 6, ';
+                        array_push($fluffinessSearchArray, '> 6');
+                        break;
+                }
+            }
+        }
+        // echo '</p>';
+    
+        $fluffinessSearchSql = '';
+
+        if (count($fluffinessSearchArray) > 1) {
+            foreach ($fluffinessSearchArray as $index => $fluffinessRange) {
+                if ($index == count($fluffinessSearchArray) - 1) {
+                    $fluffinessSearchSql .= $fluffinessRange;
+                } else {
+                    $fluffinessSearchSql .= $fluffinessRange . ' OR `level_of_fluffiness` ';
+                }
             }
 
-            if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput']) && !isset($_GET['earLengthInput']) && !isset($_GET['fluffinessInput'])) {
-                $sql4 .= " WHERE (bunnies_abilities.ability_id = $abilitySearchSql)";
-            } else {
-                $sql4 .= " AND (bunnies_abilities.ability_id = $abilitySearchSql)";
-            }
-
+        } else {
+            $fluffinessSearchSql = $fluffinessSearchArray[0];
         }
 
-        if (empty($_GET) === false) {
-            echo '<h3>Bunnies that match your criteria:</h3>';  
-            
-            // echo $sql4;
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput']) && !isset($_GET['earLengthInput'])) {
+            $sql4 .= " WHERE `level_of_fluffiness` $fluffinessSearchSql ";
+        } else {
+            $sql4 .= " AND (`level_of_fluffiness` $fluffinessSearchSql)";
+        }
+    }
 
+    if (isset($_GET['abilityInput'])) {
+        $abilities = $_GET['abilityInput'];
+        // echo '<p>Special abilities: ';
+        // for ($i = 0; $i < count($abilities); $i++) {
+        //     foreach ($abilityData as $ability) {
+        //         if ($i == count($abilities) - 1 && $abilities[$i] == $ability['id']) {
+        //             echo $ability['ability']. '.';
+        //         }
+        //         if ($i < count($abilities) - 1 && $abilities[$i] == $ability['id']) {
+        //             echo $ability['ability']. ', ';
+        //         }
+        //     }
+        // }
+        // echo '</p>';
+    
+        $abilitySearchSql = '';
+
+        if (count($abilities) > 1) {
+            foreach ($abilities as $index => $ability) {
+                if ($index == count($abilities) - 1) {
+                    $abilitySearchSql .= $ability;
+                } else {
+                    $abilitySearchSql .= $ability . ' OR bunnies_abilities.ability_id = ';
+                }
+            }
+
+        } else {
+            $abilitySearchSql = $abilities[0];
+        }
+
+        if (!isset($_GET['breedInput']) && !isset($_GET['genderInput']) && !isset($_GET['groupInput']) && !isset($_GET['neuteredInput']) && !isset($_GET['colourInput']) && !isset($_GET['ageInput']) && !isset($_GET['weightInput']) && !isset($_GET['earLengthInput']) && !isset($_GET['fluffinessInput'])) {
+            $sql4 .= " WHERE (bunnies_abilities.ability_id = $abilitySearchSql)";
+        } else {
+            $sql4 .= " AND (bunnies_abilities.ability_id = $abilitySearchSql)";
+        }
+
+    }
+
+    if (empty($_GET) === false) {
+        echo '<h3>Bunnies that match your criteria:</h3>';
+
+        // echo $sql4;
+    
         $result4 = $conn->query($sql4);
         while ($row = mysqli_fetch_assoc($result4)) {
             $bunnyData[] = $row;
-        };
+        }
+        ;
 
         if ($result4->num_rows > 0) {
             ?>
-            <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Breed</th>
-                    <th>Gender</th>
-                    <th>Group</th>
-                    <th>Neutered</th>
-                    <th>Colour</th>
-                    <th>Weight</th>
-                    <th>Special abilities</th>
-                    <th>Level of fluffiness (1-10)</th>
-                    <th>Rescue date</th>
-                </tr>
-                <?php 
-                foreach($bunnyData as $bunny) {
-                    $attributes = "class='bunny-block'";
-                    $attributes .= ' data-id="' . $bunny['id'] . '"';
-                    $attributes .= ' data-name="' . $bunny['name'] . '"';
-                    $attributes .= ' data-story="' . $bunny['story'] . '"';
-                    $attributes .= ' data-picture="' . $bunny['picture'] . '"';
-                    echo "<tr " . $attributes. ">";
-                    ?>
-                    <td class="bunny-name"><?php echo $bunny['name']; 
-                    if ($bunny['customers_id'] !== null) {
-                        echo '<div class="reserved-small">RESERVED</div>';
-                    } 
-                    ?></td>
-                    <td><?php echo $bunny['breed']; ?></td>
-                    <td><?php echo $bunny['gender']; ?></td>
-                    <td><?php echo $bunny['group']; ?></td>
-                    <td><?php 
-                    if ($bunny['neutered'] == 1) {
-                        echo 'Yes';
-                    } else {
-                        echo 'No';
-                    }
-                    ?></td>
-                    <td><?php echo $bunny['colour']; ?></td>
-                    <td><?php echo $bunny['weight']; ?> kg</td>
-                    <td><?php 
-                    $id = $bunny['id'];
-                    
-                    $sql5 = 'SELECT 
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Breed</th>
+                            <th>Gender</th>
+                            <th>Group</th>
+                            <th>Neutered</th>
+                            <th>Colour</th>
+                            <th>Weight</th>
+                            <th>Special abilities</th>
+                            <th>Level of fluffiness (1-10)</th>
+                            <th>Rescue date</th>
+                        </tr>
+                        <?php
+                        foreach ($bunnyData as $bunny) {
+                            $attributes = "class='bunny-block'";
+                            $attributes .= ' data-id="' . $bunny['id'] . '"';
+                            $attributes .= ' data-name="' . $bunny['name'] . '"';
+                            $attributes .= ' data-story="' . $bunny['story'] . '"';
+                            $attributes .= ' data-picture="' . $bunny['picture'] . '"';
+                            echo "<tr " . $attributes . ">";
+                            ?>
+                                <td class="bunny-name"><?php echo $bunny['name'];
+                                if ($bunny['customers_id'] !== null) {
+                                    echo '<div class="reserved-small">RESERVED</div>';
+                                }
+                                ?></td>
+                                <td><?php echo $bunny['breed']; ?></td>
+                                <td><?php echo $bunny['gender']; ?></td>
+                                <td><?php echo $bunny['group']; ?></td>
+                                <td><?php
+                                if ($bunny['neutered'] == 1) {
+                                    echo 'Yes';
+                                } else {
+                                    echo 'No';
+                                }
+                                ?></td>
+                                <td><?php echo $bunny['colour']; ?></td>
+                                <td><?php echo $bunny['weight']; ?> kg</td>
+                                <td><?php
+                                $id = $bunny['id'];
+
+                                $sql5 = 'SELECT 
                     abilities.ability as ability,
                     abilities.description as description
                     FROM bunnies_abilities
@@ -894,29 +897,30 @@ while ($row = mysqli_fetch_assoc($result3)) {
                     JOIN abilities
                     ON abilities.id = bunnies_abilities.ability_id
                     WHERE bunnies.id =' . $id;
-    
-                    $result5 = $conn->query($sql5);
-                    while ($row = mysqli_fetch_assoc($result5)) {
-                    $attributes = "class='ability'";
-                    $attributes .= ' data-ability="' . $row['ability'] . '"';
-                    $attributes .= ' data-description="' . $row['description'] . '"';
-                    echo '<div ' .$attributes. '>';
-                    echo $row['ability'];
-                    echo '</div>';
-                    };
-                    ?></td>
-                    <td><?php echo $bunny['level_of_fluffiness']; ?></td>
-                    <td><?php echo $bunny['rescue_date']; ?></td>
-                    <td><a href="view.php?id=<?php echo $bunny['id']; ?>"><button>More</button></a></td>
-                </tr>
+
+                                $result5 = $conn->query($sql5);
+                                while ($row = mysqli_fetch_assoc($result5)) {
+                                    $attributes = "class='ability'";
+                                    $attributes .= ' data-ability="' . $row['ability'] . '"';
+                                    $attributes .= ' data-description="' . $row['description'] . '"';
+                                    echo '<div ' . $attributes . '>';
+                                    echo $row['ability'];
+                                    echo '</div>';
+                                }
+                                ;
+                                ?></td>
+                                <td><?php echo $bunny['level_of_fluffiness']; ?></td>
+                                <td><?php echo $bunny['rescue_date']; ?></td>
+                                <td><a href="view.php?id=<?php echo $bunny['id']; ?>"><button>More</button></a></td>
+                            </tr>
+                                <?php
+                        } ?>
+                        </table>
                     <?php
-                } ?>
-                </table>
-                <?php 
-                } else {
-                    echo '<p>No bunnies match your search criteria.</p>';
-                }
-            }
+        } else {
+            echo '<p>No bunnies match your search criteria.</p>';
+        }
+    }
 
     ?>
 
