@@ -3,7 +3,7 @@
 
 <div class="footer">
     <div class="footer-content">
-        <p>Rescue a Bun</p>
+        <p>Rehome a Bun</p>
         <p>All rights reserved 2024</p>
     </div>
 
